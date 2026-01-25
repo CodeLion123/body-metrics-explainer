@@ -20,39 +20,45 @@ export default function Tool() {
   const [activeTab, setActiveTab] = useState('bmi');
 
   // BMI State
-  const [weight, setWeight] = useState(70);
-  const [height, setHeight] = useState(175);
+  const [weight, setWeight] = useState('70');
+  const [height, setHeight] = useState('175');
   const [bmiResult, setBmiResult] = useState<any>(null);
 
   // BP State
-  const [systolic, setSystolic] = useState(120);
-  const [diastolic, setDiastolic] = useState(80);
+  const [systolic, setSystolic] = useState('120');
+  const [diastolic, setDiastolic] = useState('80');
   const [bpResult, setBpResult] = useState<any>(null);
 
   // WHR State
-  const [waist, setWaist] = useState(80);
-  const [hip, setHip] = useState(100);
+  const [waist, setWaist] = useState('80');
+  const [hip, setHip] = useState('100');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [whrResult, setWhrResult] = useState<any>(null);
 
   const handleBMICalculate = () => {
-    if (weight > 0 && height > 0) {
-      const bmi = calculateBMI(weight, height);
+    const w = parseFloat(weight);
+    const h = parseFloat(height);
+    if (w > 0 && h > 0) {
+      const bmi = calculateBMI(w, h);
       const category = getBMICategory(bmi);
       setBmiResult({ bmi, ...category });
     }
   };
 
   const handleBPCalculate = () => {
-    if (systolic >= 0 && diastolic >= 0) {
-      const category = getBloodPressureCategory(systolic, diastolic);
-      setBpResult({ systolic, diastolic, ...category });
+    const sys = parseInt(systolic);
+    const dia = parseInt(diastolic);
+    if (sys > 0 && dia > 0) {
+      const category = getBloodPressureCategory(sys, dia);
+      setBpResult({ systolic: sys, diastolic: dia, ...category });
     }
   };
 
   const handleWHRCalculate = () => {
-    if (waist > 0 && hip > 0) {
-      const whr = calculateWHR(waist, hip);
+    const w = parseFloat(waist);
+    const h = parseFloat(hip);
+    if (w > 0 && h > 0) {
+      const whr = calculateWHR(w, h);
       const category = getWHRCategory(whr, gender);
       setWhrResult({ whr, ...category });
     }
@@ -125,11 +131,11 @@ export default function Tool() {
                         <input
                           type="number"
                           value={weight}
-                          onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
+                          onChange={(e) => setWeight(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
                           placeholder="Enter your weight"
                         />
-                        <p className="text-sm text-gray-500 mt-1">Current: {weight} kg ({(weight * 2.205).toFixed(1)} lbs)</p>
+                        <p className="text-sm text-gray-500 mt-1">Current: {weight} kg ({(parseFloat(weight) * 2.205 || 0).toFixed(1)} lbs)</p>
                       </div>
 
                       <div>
@@ -139,11 +145,11 @@ export default function Tool() {
                         <input
                           type="number"
                           value={height}
-                          onChange={(e) => setHeight(parseFloat(e.target.value) || 0)}
+                          onChange={(e) => setHeight(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
                           placeholder="Enter your height"
                         />
-                        <p className="text-sm text-gray-500 mt-1">Current: {height} cm ({Math.floor(height/2.54/12)}'{Math.round(height/2.54%12)}")</p>
+                        <p className="text-sm text-gray-500 mt-1">Current: {height} cm ({Math.floor((parseFloat(height) || 0)/2.54/12)}'{Math.round((parseFloat(height) || 0)/2.54%12)}")</p>
                       </div>
 
                       <button
@@ -229,7 +235,7 @@ export default function Tool() {
                         <input
                           type="number"
                           value={systolic}
-                          onChange={(e) => setSystolic(parseInt(e.target.value) || 0)}
+                          onChange={(e) => setSystolic(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg"
                           placeholder="Enter systolic pressure"
                         />
@@ -243,7 +249,7 @@ export default function Tool() {
                         <input
                           type="number"
                           value={diastolic}
-                          onChange={(e) => setDiastolic(parseInt(e.target.value) || 0)}
+                          onChange={(e) => setDiastolic(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg"
                           placeholder="Enter diastolic pressure"
                         />
@@ -344,7 +350,7 @@ export default function Tool() {
                         <input
                           type="number"
                           value={waist}
-                          onChange={(e) => setWaist(parseFloat(e.target.value) || 0)}
+                          onChange={(e) => setWaist(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-lg"
                           placeholder="Measure at narrowest point"
                         />
@@ -358,7 +364,7 @@ export default function Tool() {
                         <input
                           type="number"
                           value={hip}
-                          onChange={(e) => setHip(parseFloat(e.target.value) || 0)}
+                          onChange={(e) => setHip(e.target.value)}
                           className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-lg"
                           placeholder="Measure at widest point"
                         />
