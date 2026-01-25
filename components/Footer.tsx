@@ -27,9 +27,12 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="font-bold text-lg mb-4 text-blue-300">Connect</h3>
+            <h3 className="font-bold text-lg mb-4 text-blue-300">Contact Us</h3>
             <div className="space-y-3">
               <p className="text-gray-400">Have questions? Reach out to us anytime.</p>
+              <a href="/contact" className="inline-block text-blue-300 hover:text-blue-200 font-medium transition">
+                Get in Touch →
+              </a>
             </div>
           </div>
         </div>

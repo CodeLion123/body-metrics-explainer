@@ -24,7 +24,7 @@ export default function Header() {
               Tools
             </Link>
             <Link href="/about" className="text-gray-300 hover:text-blue-300 transition font-semibold">
-              About
+              About Us
             </Link>
             <Link href="/disclaimer" className="text-gray-300 hover:text-blue-300 transition font-semibold">
               Disclaimer

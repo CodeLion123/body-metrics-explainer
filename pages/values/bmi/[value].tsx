@@ -9,7 +9,7 @@ export async function getStaticPaths() {
   for (let i = 18; i <= 40; i += 0.5) {
     paths.push({ params: { value: i.toFixed(1) }});
   }
-  return { paths, fallback: false };
+  return { paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }) {

@@ -34,7 +34,7 @@ export default function Home() {
           {/* Tools Section */}
           <section>
             <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Health Metrics Tools</h2>
-            <div className="grid md:grid-cols-2 gap-10">
+            <div className="grid md:grid-cols-3 gap-10">
               {/* BMI Calculator */}
               <Link href="/body-metrics#bmi">
                 <div className="bg-white rounded-2xl shadow-xl p-10 hover:shadow-2xl transition cursor-pointer hover:-translate-y-2 transform border-t-4 border-blue-500 group">
@@ -55,6 +55,18 @@ export default function Home() {
                   <p className="text-gray-600 mb-6">Learn about blood pressure categories and what they mean for your health</p>
                   <div className="inline-block bg-red-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-700 transition">
                     Explore Ranges
+                  </div>
+                </div>
+              </Link>
+
+              {/* Waist-to-Hip Ratio Tool */}
+              <Link href="/body-metrics#whr">
+                <div className="bg-white rounded-2xl shadow-xl p-10 hover:shadow-2xl transition cursor-pointer hover:-translate-y-2 transform border-t-4 border-purple-500 group">
+                  <div className="text-6xl mb-4 group-hover:scale-110 transition">📏</div>
+                  <h3 className="text-2xl font-bold text-purple-700 mb-3 group-hover:text-purple-500 transition">Waist-to-Hip Ratio</h3>
+                  <p className="text-gray-600 mb-6">Assess body fat distribution and health risks through waist-to-hip measurements</p>
+                  <div className="inline-block bg-purple-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-purple-700 transition">
+                    Calculate Now
                   </div>
                 </div>
               </Link>
