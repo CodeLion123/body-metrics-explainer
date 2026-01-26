@@ -42,7 +42,7 @@ export default function Footer() {
             <p className="text-gray-400 text-sm">
               &copy; {currentYear} Body Metrics Explainer. All rights reserved.
             </p>
-            <p className="text-gray-500 text-sm italic">
+            <p className="text-gray-400 text-sm italic">
               Educational purposes only. Not medical advice.
             </p>
           </div>

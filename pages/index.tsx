@@ -32,7 +32,8 @@ export default function Home() {
               <Link href="/body-metrics" className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition text-lg shadow-lg">
                 Try Our Calculators
               </Link>
-              <Link href="/about" className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition text-lg border-2 border-blue-600">
+              <Link href="/about" aria-label="Learn more about our BMI and health metrics platform" className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-gray-100 transition text-lg border-2 border-blue-600">
+                <span className="sr-only">Learn more about our BMI and health metrics platform</span>
                 Learn More
               </Link>
             </div>
@@ -359,7 +360,7 @@ export default function Home() {
               </Link>
               <Link href="/values/bmi/25">
                 <div className="bg-yellow-50 rounded-lg shadow p-6 hover:shadow-lg transform hover:scale-105 transition cursor-pointer border border-yellow-200">
-                  <div className="text-2xl font-bold text-yellow-600 mb-2">BMI 25</div>
+                  <div className="text-2xl font-bold text-amber-600 mb-2">BMI 25</div>
                   <p className="text-gray-700 font-semibold">Overweight</p>
                   <p className="text-gray-600 text-sm">Above healthy range</p>
                 </div>
@@ -387,8 +388,8 @@ export default function Home() {
 
           {/* Trust Signals */}
           <section className="text-center py-8">
-            <p className="text-gray-500 mb-6">Our tools are built on:</p>
-            <div className="flex flex-wrap justify-center gap-8 items-center text-gray-400 mb-6">
+            <p className="text-gray-700 mb-6">Our tools are built on:</p>
+            <div className="flex flex-wrap justify-center gap-8 items-center text-gray-600 mb-6">
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-bold">📊</span>
                 <span className="text-sm">Standard Medical Formulas</span>
@@ -402,7 +403,7 @@ export default function Home() {
                 <span className="text-sm">Evidence-Based Classifications</span>
               </div>
             </div>
-            <p className="text-xs text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xs text-gray-600 max-w-2xl mx-auto">
               For educational purposes only. Always consult healthcare professionals for medical advice.
             </p>
           </section>
