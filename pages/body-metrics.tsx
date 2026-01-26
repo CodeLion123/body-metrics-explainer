@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { calculateBMI, getBMICategory, getBloodPressureCategory, calculateWHR, getWHRCategory } from '../lib/calculations';
 
@@ -19,49 +19,94 @@ const getColorTailwind = (color: string) => {
 export default function Tool() {
   const [activeTab, setActiveTab] = useState('bmi');
 
+  // Handle hash in URL for tab selection (e.g., #bp activates BP section)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash;
+      if (hash === "#bp") setActiveTab("bp");
+      if (hash === "#whr") setActiveTab("whr");
+    }
+    // Listen for hash change as well
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === "#bp") setActiveTab("bp");
+      else if (hash === "#whr") setActiveTab("whr");
+      else if (hash === "" || hash === "#bmi") setActiveTab("bmi");
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
   // BMI State
   const [weight, setWeight] = useState('70');
   const [height, setHeight] = useState('175');
   const [bmiResult, setBmiResult] = useState<any>(null);
+  const [bmiError, setBmiError] = useState('');
 
   // BP State
   const [systolic, setSystolic] = useState('120');
   const [diastolic, setDiastolic] = useState('80');
   const [bpResult, setBpResult] = useState<any>(null);
+  const [bpError, setBpError] = useState('');
 
   // WHR State
   const [waist, setWaist] = useState('80');
   const [hip, setHip] = useState('100');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [whrResult, setWhrResult] = useState<any>(null);
+  const [whrError, setWhrError] = useState('');
 
   const handleBMICalculate = () => {
+    setBmiError('');
+    setBmiResult(null);
+    if (!weight.trim() || !height.trim()) {
+      setBmiError('Weight and height cannot be empty.');
+      return;
+    }
     const w = parseFloat(weight);
     const h = parseFloat(height);
-    if (w > 0 && h > 0) {
-      const bmi = calculateBMI(w, h);
-      const category = getBMICategory(bmi);
-      setBmiResult({ bmi, ...category });
+    if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) {
+      setBmiError('Please enter valid, positive numbers for weight and height.');
+      return;
     }
+    const bmi = calculateBMI(w, h);
+    const category = getBMICategory(bmi);
+    setBmiResult({ bmi, ...category });
   };
 
   const handleBPCalculate = () => {
+    setBpError('');
+    setBpResult(null);
+    if (!systolic.trim() || !diastolic.trim()) {
+      setBpError('Systolic and diastolic values cannot be empty.');
+      return;
+    }
     const sys = parseInt(systolic);
     const dia = parseInt(diastolic);
-    if (sys > 0 && dia > 0) {
-      const category = getBloodPressureCategory(sys, dia);
-      setBpResult({ systolic: sys, diastolic: dia, ...category });
+    if (isNaN(sys) || isNaN(dia) || sys <= 0 || dia <= 0) {
+      setBpError('Please enter valid, positive numbers for systolic and diastolic.');
+      return;
     }
+    const category = getBloodPressureCategory(sys, dia);
+    setBpResult({ systolic: sys, diastolic: dia, ...category });
   };
 
   const handleWHRCalculate = () => {
+    setWhrError('');
+    setWhrResult(null);
+    if (!waist.trim() || !hip.trim()) {
+      setWhrError('Waist and hip values cannot be empty.');
+      return;
+    }
     const w = parseFloat(waist);
     const h = parseFloat(hip);
-    if (w > 0 && h > 0) {
-      const whr = calculateWHR(w, h);
-      const category = getWHRCategory(whr, gender);
-      setWhrResult({ whr, ...category });
+    if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) {
+      setWhrError('Please enter valid, positive numbers for waist and hip.');
+      return;
     }
+    const whr = calculateWHR(w, h);
+    const category = getWHRCategory(whr, gender);
+    setWhrResult({ whr, ...category });
   };
 
   return (
@@ -103,7 +148,15 @@ export default function Tool() {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id);
+                  // Update URL hash accordingly for better UX
+                  if (typeof window !== "undefined") {
+                    if (tab.id === 'bmi') window.location.hash = '#bmi';
+                    if (tab.id === 'bp') window.location.hash = '#bp';
+                    if (tab.id === 'whr') window.location.hash = '#whr';
+                  }
+                }}
                 className={`px-6 py-4 font-bold text-base md:text-lg transition rounded-lg whitespace-nowrap ${
                   activeTab === tab.id
                     ? `bg-gradient-to-r from-${tab.color}-600 to-${tab.color}-700 text-white shadow-lg`
@@ -151,6 +204,10 @@ export default function Tool() {
                         />
                         <p className="text-sm text-gray-500 mt-1">Current: {height} cm ({Math.floor((parseFloat(height) || 0)/2.54/12)}'{Math.round((parseFloat(height) || 0)/2.54%12)}")</p>
                       </div>
+
+                      {bmiError && (
+                        <div className="text-red-600 text-sm mb-2">{bmiError}</div>
+                      )}
 
                       <button
                         onClick={handleBMICalculate}
@@ -255,6 +312,10 @@ export default function Tool() {
                         />
                         <p className="text-sm text-gray-500 mt-1">Pressure when heart rests</p>
                       </div>
+                      
+                      {bpError && (
+                        <div className="text-red-600 text-sm mb-2">{bpError}</div>
+                      )}
 
                       <button
                         onClick={handleBPCalculate}
@@ -370,6 +431,10 @@ export default function Tool() {
                         />
                         <p className="text-sm text-gray-500 mt-1">Measure at the widest part of your hips</p>
                       </div>
+
+                      {whrError && (
+                        <div className="text-red-600 text-sm mb-2">{whrError}</div>
+                      )}
 
                       <button
                         onClick={handleWHRCalculate}
